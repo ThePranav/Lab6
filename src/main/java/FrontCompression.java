@@ -44,8 +44,17 @@ public class FrontCompression {
         /*
          * Complete this function.
          */
-
-        return "";
+        String[] corpusArray = corpus.split("\n");
+        String[] compressedArray = new String[corpusArray.length];
+        String prevWord = "";
+        for (int i = 0; i < corpusArray.length; i++) {
+            int prefix = longestPrefix(corpusArray[i], prevWord);
+            compressedArray[i] = prefix + " " + corpusArray[i].substring(prefix);
+            prevWord = corpusArray[i];
+            System.out.println(corpusArray[i] + " " + compressedArray[i]);
+        }
+        String result = String.join("\n", compressedArray);
+        return result;
     }
 
     /**
@@ -67,8 +76,29 @@ public class FrontCompression {
         /*
          * Complete this function.
          */
-
-        return "";
+        String[] corpusArray = corpus.split("\n");
+        String[] decompressedArray = new String[corpusArray.length];
+        String prevWord = "";
+        for (int i = 0; i < corpusArray.length; i++) {
+            String prefix = "";
+            int prefixLength = 0;
+            for (int j = 0; j < corpusArray[i].length(); j++) {
+                if (corpusArray[i].charAt(j) == ' ') {
+                    prefixLength = Integer.parseInt(corpusArray[i].substring(0, j));
+                    decompressedArray[i] = corpusArray[i].substring(j);
+                    break;
+                }
+            }
+            if (prefixLength < prevWord.length()) {
+                prefix = prevWord.substring(0, prefixLength);
+            } else {
+                prefix = prevWord;
+            }
+            decompressedArray[i] = prefix + decompressedArray[i];
+            prevWord = corpusArray[i];
+        }
+        String result = String.join("\n", decompressedArray);
+        return result + "\n";
     }
 
     /**
@@ -82,7 +112,14 @@ public class FrontCompression {
         /*
          * Complete this function.
          */
-        return 0;
+        int prefix = 0;
+        for (int j = 0; j < firstString.length() && j < secondString.length(); j++) {
+            if (firstString.charAt(j) != secondString.charAt(j)) {
+                prefix = j;
+                break;
+            }
+        }
+        return prefix;
     }
 
     /**
